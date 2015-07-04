@@ -6,7 +6,8 @@ import os
 import subprocess
 
 def get_data_from_git(format_string, commit):
-  return subprocess.check_output(['git', 'log', '-1', '--format=format:%s' % format_string, commit])
+  output = subprocess.check_output(['git', 'log', '-1', '--format=format:%s' % format_string, commit])
+  return output.decode('utf-8')
 
 def get_author(commit):
   return get_data_from_git('%an <%ae>', commit)
