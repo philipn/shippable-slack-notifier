@@ -1,4 +1,9 @@
-import httplib, json, argparse, sys, os, subprocess
+from http import client
+import json
+import argparse
+import sys
+import os
+import subprocess
 
 def get_data_from_git(format_string, commit):
   return subprocess.check_output(['git', 'log', '-1', '--format=format:%s' % format_string, commit])
@@ -48,7 +53,7 @@ def post_message(connection, url, success):
 
   connection.request('POST', url, json.dumps(message), headers)
   response = connection.getresponse()
-  print response.read().decode()
+  print(response.read().decode())
 
 def main():
   parser = argparse.ArgumentParser(description='Slack notifier for Shippable.')
@@ -58,7 +63,7 @@ def main():
 
   args = parser.parse_args(sys.argv[1:])
 
-  connection = httplib.HTTPSConnection('hooks.slack.com')
+  connection = client.HTTPSConnection('hooks.slack.com')
   post_message(connection, args.slack_url, args.message == "success")
 
 if __name__ == '__main__':
